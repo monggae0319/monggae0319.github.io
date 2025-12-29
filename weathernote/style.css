@@ -1,0 +1,108 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+body {
+    margin: 0;
+    background: #111;
+    /* PC에서 바깥 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+p{
+    margin:0;
+}
+
+/* 모바일 화면 영역 */
+.main {
+    width: 100%;
+    max-width: 500px;
+    /* 아이폰 14 기준 */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+/* 고정 영역 */
+header {
+    height: 56px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+header img{
+    height: 80%;
+    margin-left: 1rem;
+}
+
+footer {
+    height: 56px;
+    flex-shrink: 0;
+    border-top: 1px solid #eee;
+
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 스크롤 영역 */
+.body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* iOS 관성 스크롤 */
+}
+.timeBox p{
+    color:#727272;
+}
+.body > div{
+    margin: 1rem 1rem 0rem 1rem;
+}
+.location{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:1rem;
+}
+.location img{
+    height: 1.3rem;
+    margin-left: 2rem;
+    cursor: pointer;
+}
+.nowWeather{
+    display: flex;
+    margin: 3rem 2rem;
+}
+.left{
+    width:40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#nowTemp{
+    font-size: 5rem;
+}
+.right{
+    width:60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.rightBox{
+    display: flex;
+    align-items: flex-end;
+}
+.itemTitle{
+    width: 25%;
+    text-align: right;
+}
+.itemCont{
+    font-size: 1.4rem;
+    flex: 1;
+    text-align: right;
+    margin-right: 1rem;
+}
+.itemDan{
+    width: 25%;
+}
