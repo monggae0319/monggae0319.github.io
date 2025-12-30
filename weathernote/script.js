@@ -63,7 +63,22 @@ function display(data){
             skyImg.src = './icons/cloud.svg'
         }
     }else{
-
+        var sky = nowWeather.data.rainType;
+        if(sky == '비' || sky == '빗방울'){
+            skyImg.src = './icons/rain.svg'
+        }else if(sky == '비/눈'){
+            skyImg.src = './icons/rainsnow.svg'
+        }else if(sky == '눈'){
+            skyImg.src = './icons/snow.svg'
+        }else if(sky == '빗방울'){
+            skyImg.src = './icons/rainylight.svg'
+        }else if(sky == '빗방울눈날림'){
+            skyImg.src = './icons/mix.svg'
+        }else if(sky == '눈날림'){
+            skyImg.src = './icons/snow.svg'
+        }else{
+            skyImg.src = './icons/sunny.svg'
+        }
     }
 
     //현재 날씨
