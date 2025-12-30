@@ -102,9 +102,9 @@ function display(data){
 
     //현재 날씨
     document.getElementById('nowTemp').textContent = nowWeather.data.temp;
-    document.getElementById('nowRain').textContent = nowWeather.data.rain;
-    document.getElementById('nowHumid').textContent = nowWeather.data.humid;
-    document.getElementById('nowWind').textContent = `${getDir(nowWeather.data.wind.dir)} ${nowWeather.data.wind.speed}`;
+    document.getElementById('nowRain').textContent = nowWeather.data.rain + 'mm/h';
+    document.getElementById('nowHumid').textContent = nowWeather.data.humid + '%';
+    document.getElementById('nowWind').textContent = `${getDir(nowWeather.data.wind.dir)} ${nowWeather.data.wind.speed}m/s`;
 
     //기상특보
     var box = document.getElementById('warningBox');
@@ -143,7 +143,7 @@ function getWeather(lat, lon) {
             console.error(err);
         })
         .finally(() => {
-            finLoad(); // ✅ 성공/실패 상관없이 무조건 실행
+            finLoad();
         });
 }
 function getWeatherSigungu(add){
@@ -158,7 +158,7 @@ function getWeatherSigungu(add){
             console.error(err);
         })
         .finally(() => {
-            finLoad(); // ✅ 성공/실패 상관없이 무조건 실행
+            finLoad();
         });
 }
 // getWeather(37.49, 126.91)
@@ -306,8 +306,6 @@ var test = {
 }
 display(test)
 
-// https://weather-aacbbrnvla-du.a.run.app/?lat=35.8266&lon=127.1332
-
 document.getElementById('getLocation').addEventListener("click", function(){
     navigator.geolocation.getCurrentPosition((position) => {
         var lat = (position.coords.latitude).toFixed(2);
@@ -342,7 +340,6 @@ box.appendChild(pathText);
 box.appendChild(container);
 box.appendChild(selectBtn);
 
-/* 상태 */
 let sigunguData = null;
 
 const selected = {
@@ -351,7 +348,6 @@ const selected = {
     dong: null
 };
 
-/* 데이터 로드 */
 document.getElementById('getSigungu').addEventListener("click", () => {
     fetch('./data/sigungu_list.json')
         .then(res => res.json())
@@ -365,7 +361,6 @@ document.getElementById('getSigungu').addEventListener("click", () => {
         .catch(console.error);
 });
 
-/* 공통 */
 function clearContainer() {
     container.replaceChildren();
 }
@@ -398,7 +393,6 @@ function resetSelected(level) {
     }
 }
 
-/* 1️⃣ 시 */
 function renderCities() {
     clearContainer();
 
@@ -414,11 +408,9 @@ function renderCities() {
     });
 }
 
-/* 2️⃣ 구 */
 function renderGu(city) {
     clearContainer();
 
-    // 🔙 상위 → 시
     container.appendChild(
         createButton("← 상위", () => {
             resetSelected("city");
@@ -441,11 +433,9 @@ function renderGu(city) {
     });
 }
 
-/* 3️⃣ 동 */
 function renderDong(dongList) {
     clearContainer();
 
-    // 🔙 상위 → 구
     container.appendChild(
         createButton("← 상위", () => {
             resetSelected("dong");
@@ -464,7 +454,6 @@ function renderDong(dongList) {
     });
 }
 
-/* 선택 버튼 */
 selectBtn.addEventListener("click", () => {
     const result = [selected.city, selected.gu, selected.dong]
         .filter(Boolean)
