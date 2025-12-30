@@ -1,117 +1,218 @@
+function baseTime(time){
+    return `${time.slice(0,4)}년 ${time.slice(4,6)}월 ${time.slice(6,8)}일 ${time.slice(8,10)}:${time.slice(10,12)}`
+}
+function getDir(deg){
+    if (deg == null || isNaN(deg)) return null;
+
+    // 0~360 정규화
+    const normalized = ((deg % 360) + 360) % 360;
+
+    const directions = [
+        "북", "북북동", "북동", "동북동",
+        "동", "동남동", "남동", "남남동",
+        "남", "남남서", "남서", "서남서",
+        "서", "서북서", "북서", "북북서"
+    ];
+
+    const index = Math.round(normalized / 22.5) % 16;
+    return directions[index];
+}
+let bodyLoading = null;
+
+function makeLoad() {
+    const body = document.querySelector(".body");
+
+    if (!bodyLoading) {
+        bodyLoading = document.createElement("div");
+        bodyLoading.className = "body-loading";
+
+        const box = document.createElement("div");
+        box.className = "loading-box";
+        box.textContent = "로딩 중…";
+
+        bodyLoading.appendChild(box);
+        body.appendChild(bodyLoading);
+    }
+
+    bodyLoading.classList.remove("hidden");
+}
+
+function finLoad() {
+    if (!bodyLoading) return;
+    bodyLoading.classList.add("hidden");
+}
 function display(data){
     console.log(data)
+    var nowWeather = data.body.weather.now;
+    var forecastWeather = data.body.weather.forecast;
+
+    document.getElementById('baseTime').textContent = `${(baseTime(nowWeather.basetime)).slice(10,)} 현재`
+    console.log(baseTime(data.body.weather.now.basetime))
+    document.getElementById('locationText').textContent = data.body.location.text;
+
+
+    //현재 하늘
+    if(nowWeather.data.rainType == '없음'){
+        var sky = forecastWeather.items[0].data.sky;
+        var skyImg = document.getElementById('nowSky');
+        if(sky == '맑음'){
+            skyImg.src = './icons/sunny.svg'
+        }else if(sky == '구름 많음'){
+            skyImg.src = './icons/partly.svg'
+        }else if(sky == '흐림'){
+            skyImg.src = './icons/cloud.svg'
+        }
+    }else{
+
+    }
+
+    //현재 날씨
+    document.getElementById('nowTemp').textContent = nowWeather.data.temp;
+    document.getElementById('nowRain').textContent = nowWeather.data.rain;
+    document.getElementById('nowHumid').textContent = nowWeather.data.humid;
+    document.getElementById('nowWind').textContent = `${getDir(nowWeather.data.wind.dir)} ${nowWeather.data.wind.speed}`;
+
+    //기상특보
+    var box = document.getElementById('warningBox');
+    box.replaceChildren();
+    if(data.body.warning != null){
+        var warningData = data.body.warning.warning;
+        function getColor(type){
+            if(type == '경보'){
+                return ['red', 'white']
+            }else if(type == '주의'){
+                return ['yellow', 'black']
+            }else{
+                return ['#00e5ff', "black"]
+            }
+        }
+        warningData.forEach(item => {
+            console.log(item)
+            var warnBox = document.createElement('span');
+            console.log(item.type)
+            warnBox.textContent = item.type;
+            warnBox.style = `background-color: ${getColor(item.level)[0]}; color: ${getColor(item.level)[1]}; padding: 0.5rem 2rem; border-radius:5px; font-weight:600;`
+            box.appendChild(warnBox)
+        })
+    }
 }
 
 function getWeather(lat, lon) {
+    makeLoad()
     fetch(`https://weather-aacbbrnvla-du.a.run.app/?lat=${lat}&lon=${lon}`)
-        .then(res => res.json())   // 응답을 JSON으로 변환
+        .then(res => res.json())
         .then(data => {
-            console.log(data);     // 여기서 콘솔 출력
+            console.log(data);   
+            display(data);
         })
         .catch(err => {
             console.error(err);
+        })
+        .finally(() => {
+            finLoad(); // ✅ 성공/실패 상관없이 무조건 실행
+        });
+}
+function getWeatherSigungu(add){
+    makeLoad()
+    fetch(`https://geocoding-aacbbrnvla-du.a.run.app/?loc=${add}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);   
+            display(data)
+        })
+        .catch(err => {
+            console.error(err);
+        })
+        .finally(() => {
+            finLoad(); // ✅ 성공/실패 상관없이 무조건 실행
         });
 }
 
 var test = {
     "success": true,
     "timezone": "KST",
-    "responseTime": "2025-12-30T14:23:34.836+09:00",
+    "responseTime": "2025-12-30T15:25:30.481+09:00",
     "body": {
         "location": {
             "grid": [
-                60,
-                126
+                67,
+                140
             ],
             "coord": [
-                37.54,
-                126.96
+                38.1646509515925,
+                127.415710898265
             ],
-            "text": "서울특별시 용산구 효창동"
+            "text": "강원특별자치도 철원군 서면 자등리"
         },
         "weather": {
             "now": {
-                "basetime": "202512301400",
+                "basetime": "202512301500",
                 "data": {
                     "wind": {
-                        "dir": "305",
-                        "speed": "3.1"
+                        "dir": "225",
+                        "speed": "2.6"
                     },
                     "rainType": "없음",
-                    "humid": "22",
+                    "humid": "29",
                     "rain": "0",
-                    "temp": "3"
+                    "temp": "0.2"
                 }
             },
             "forecast": {
-                "baseTime": "202512301330",
+                "baseTime": "202512301430",
                 "items": [
-                    {
-                        "forecastTime": "202512301400",
-                        "data": {
-                            "temp": "2",
-                            "rain": "강수없음",
-                            "rainType": "없음",
-                            "sky": "맑음",
-                            "humid": "20",
-                            "wind": {
-                                "dir": "295",
-                                "speed": "3"
-                            }
-                        }
-                    },
                     {
                         "forecastTime": "202512301500",
                         "data": {
-                            "temp": "2",
+                            "temp": "-3",
                             "rain": "강수없음",
                             "rainType": "없음",
                             "sky": "맑음",
-                            "humid": "20",
+                            "humid": "40",
                             "wind": {
-                                "dir": "291",
-                                "speed": "3"
+                                "dir": "317",
+                                "speed": "4"
                             }
                         }
                     },
                     {
                         "forecastTime": "202512301600",
                         "data": {
-                            "temp": "2",
+                            "temp": "-3",
                             "rain": "강수없음",
                             "rainType": "없음",
                             "sky": "맑음",
-                            "humid": "25",
+                            "humid": "40",
                             "wind": {
-                                "dir": "297",
-                                "speed": "3"
+                                "dir": "316",
+                                "speed": "4"
                             }
                         }
                     },
                     {
                         "forecastTime": "202512301700",
                         "data": {
-                            "temp": "1",
+                            "temp": "-3",
                             "rain": "강수없음",
                             "rainType": "없음",
                             "sky": "맑음",
-                            "humid": "35",
+                            "humid": "50",
                             "wind": {
-                                "dir": "303",
-                                "speed": "3"
+                                "dir": "312",
+                                "speed": "4"
                             }
                         }
                     },
                     {
                         "forecastTime": "202512301800",
                         "data": {
-                            "temp": "0",
+                            "temp": "-5",
                             "rain": "강수없음",
                             "rainType": "없음",
                             "sky": "맑음",
-                            "humid": "45",
+                            "humid": "60",
                             "wind": {
-                                "dir": "307",
+                                "dir": "293",
                                 "speed": "3"
                             }
                         }
@@ -119,13 +220,27 @@ var test = {
                     {
                         "forecastTime": "202512301900",
                         "data": {
-                            "temp": "-1",
+                            "temp": "-6",
                             "rain": "강수없음",
                             "rainType": "없음",
                             "sky": "맑음",
-                            "humid": "45",
+                            "humid": "65",
                             "wind": {
-                                "dir": "315",
+                                "dir": "279",
+                                "speed": "3"
+                            }
+                        }
+                    },
+                    {
+                        "forecastTime": "202512302000",
+                        "data": {
+                            "temp": "-7",
+                            "rain": "강수없음",
+                            "rainType": "없음",
+                            "sky": "구름 많음",
+                            "humid": "75",
+                            "wind": {
+                                "dir": "277",
                                 "speed": "3"
                             }
                         }
@@ -133,16 +248,29 @@ var test = {
                 ]
             }
         },
-        "warning": null
+        "warning": {
+            "warning": [
+                {
+                    "regId": "L1021300",
+                    "type": "한파",
+                    "level": "주의",
+                    "order": "발표",
+                    "issue": "202512302100",
+                    "over": ""
+                },
+                {
+                    "regId": "L1021300",
+                    "type": "건조",
+                    "level": "경보",
+                    "order": "발표",
+                    "issue": "202512302100",
+                    "over": ""
+                }
+            ]
+        }
     }
 }
 display(test)
-document.getElementById('test').addEventListener("click", function(){
-    var lat = document.getElementById('lat').value;
-    var lon = document.getElementById('lon').value;
-    getWeather(lat, lon)
-})
-
 
 // https://weather-aacbbrnvla-du.a.run.app/?lat=35.8266&lon=127.1332
 
@@ -311,6 +439,7 @@ selectBtn.addEventListener("click", () => {
         alert('지역을 선택해주세요')
     }else{
         console.log("선택 결과:", result);
+        getWeatherSigungu(result)
         closeSigunguList()
     }
 });
