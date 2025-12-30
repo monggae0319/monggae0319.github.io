@@ -55,12 +55,31 @@ function display(data){
     if(nowWeather.data.rainType == '없음'){
         var sky = forecastWeather.items[0].data.sky;
         var skyImg = document.getElementById('nowSky');
-        if(sky == '맑음'){
-            skyImg.src = './icons/sunny.svg'
-        }else if(sky == '구름 많음'){
-            skyImg.src = './icons/partly.svg'
-        }else if(sky == '흐림'){
-            skyImg.src = './icons/cloud.svg'
+        if(forecastWeather.items[0].data.raintype == '없음'){
+            if(sky == '맑음'){
+                skyImg.src = './icons/sunny.svg'
+            }else if(sky == '구름 많음'){
+                skyImg.src = './icons/partly_cloudy.svg'
+            }else if(sky == '흐림'){
+                skyImg.src = './icons/cloud.svg'
+            }
+        }else{
+            var type = forecastWeather.items[0].data.rainType
+            if(type == '비' || type == '빗방울'){
+            skyImg.src = './icons/rain.svg'
+            }else if(type == '비/눈'){
+                skyImg.src = './icons/rainsnow.svg'
+            }else if(type == '눈'){
+                skyImg.src = './icons/snow.svg'
+            }else if(type == '빗방울'){
+                skyImg.src = './icons/rainylight.svg'
+            }else if(type == '빗방울눈날림'){
+                skyImg.src = './icons/mix.svg'
+            }else if(type == '눈날림'){
+                skyImg.src = './icons/snow.svg'
+            }else{
+                skyImg.src = './icons/sunny.svg'
+            }
         }
     }else{
         var sky = nowWeather.data.rainType;
@@ -142,7 +161,7 @@ function getWeatherSigungu(add){
             finLoad(); // ✅ 성공/실패 상관없이 무조건 실행
         });
 }
-getWeather(37.49, 126.91)
+// getWeather(37.49, 126.91)
 var test = {
     "success": true,
     "timezone": "KST",
@@ -285,7 +304,7 @@ var test = {
         }
     }
 }
-// display(test)
+display(test)
 
 // https://weather-aacbbrnvla-du.a.run.app/?lat=35.8266&lon=127.1332
 
