@@ -127,7 +127,7 @@ function getWeatherSigungu(add){
             finLoad(); // ✅ 성공/실패 상관없이 무조건 실행
         });
 }
-// getWeather(37.49, 126.91)
+getWeather(37.49, 126.91)
 var test = {
     "success": true,
     "timezone": "KST",
@@ -270,7 +270,7 @@ var test = {
         }
     }
 }
-display(test)
+// display(test)
 
 // https://weather-aacbbrnvla-du.a.run.app/?lat=35.8266&lon=127.1332
 
