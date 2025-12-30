@@ -37,7 +37,6 @@ header img{
     height: 80%;
     margin-left: 1rem;
 }
-
 footer {
     height: 56px;
     flex-shrink: 0;
@@ -56,7 +55,7 @@ footer {
 .timeBox p{
     color:#727272;
 }
-.body > div{
+.top{
     margin: 1rem 1rem 0rem 1rem;
 }
 .location{
@@ -67,9 +66,14 @@ footer {
 }
 .location img{
     height: 1.3rem;
-    margin-left: 2rem;
     cursor: pointer;
+    margin-left: 1rem;
 }
+.location div{
+    height: 1.3rem;
+    margin-left: 1rem;
+}
+
 .nowWeather{
     display: flex;
     margin: 3rem 2rem;
@@ -105,4 +109,49 @@ footer {
 }
 .itemDan{
     width: 25%;
+}
+#sigunguListBox{
+    position: fixed;
+    width:100%;
+    max-width: 500px;
+    display: none;
+    background-color: rgb(229, 238, 255);
+    top:10rem;
+    padding: 2rem 0;
+}
+.sigungu-container{
+    margin: 1rem;
+}
+.selected-path{
+    text-align: center;
+}
+.sigungu-container button{
+    background-color: rgba(255, 255, 255, 0.7);
+    border:1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0.5rem;
+    padding: 0.4rem 0.7rem;
+    font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+#sigunguListBox > p {
+    text-align: center;
+}
+.selectBtn{
+    width:5rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: auto;
+    cursor: pointer;
+    background-color: white;
+    padding: 0.5rem;
+}
+#listCloseBox{
+    display: flex;
+    justify-content: flex-end;
+}
+#listCloseBox img{
+    height: 1.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
 }
