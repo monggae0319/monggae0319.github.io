@@ -42,12 +42,10 @@ function finLoad() {
     bodyLoading.classList.add("hidden");
 }
 function display(data){
-    console.log(data)
     var nowWeather = data.body.weather.now;
     var forecastWeather = data.body.weather.forecast;
 
     document.getElementById('baseTime').textContent = `${(baseTime(nowWeather.basetime)).slice(10,)} 현재`
-    console.log(baseTime(data.body.weather.now.basetime))
     document.getElementById('locationText').textContent = data.body.location.text;
 
 
@@ -121,14 +119,14 @@ function display(data){
             }
         }
         warningData.forEach(item => {
-            console.log(item)
             var warnBox = document.createElement('span');
-            console.log(item.type)
             warnBox.textContent = item.type;
             warnBox.style = `background-color: ${getColor(item.level)[0]}; color: ${getColor(item.level)[1]}; padding: 0.5rem 2rem; border-radius:5px; font-weight:600;`
             box.appendChild(warnBox)
         })
     }
+
+    //
 }
 
 function getWeather(lat, lon) {
@@ -310,7 +308,6 @@ document.getElementById('getLocation').addEventListener("click", function(){
     navigator.geolocation.getCurrentPosition((position) => {
         var lat = (position.coords.latitude).toFixed(2);
         var lon = (position.coords.longitude).toFixed(2);
-        console.log(lat,lon)
         getWeather(lat, lon)
     });
 })
@@ -461,7 +458,6 @@ selectBtn.addEventListener("click", () => {
     if(result.length == 0){
         alert('지역을 선택해주세요')
     }else{
-        console.log("선택 결과:", result);
         getWeatherSigungu(result)
         closeSigunguList()
     }
