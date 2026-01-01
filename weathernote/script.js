@@ -159,7 +159,7 @@ function getWeatherSigungu(add){
             finLoad();
         });
 }
-// getWeather(37.49, 126.91)
+getWeather(37.49, 126.91)
 var test = {
     "success": true,
     "timezone": "KST",
@@ -302,7 +302,7 @@ var test = {
         }
     }
 }
-display(test)
+// display(test)
 
 document.getElementById('getLocation').addEventListener("click", function(){
     navigator.geolocation.getCurrentPosition((position) => {
