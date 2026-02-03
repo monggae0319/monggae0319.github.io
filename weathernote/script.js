@@ -41,6 +41,11 @@ function finLoad() {
     if (!bodyLoading) return;
     bodyLoading.classList.add("hidden");
 }
+function getSkyIcon(data){
+    if(data.rainType == '없음'){
+        
+    }
+}
 function display(data){
     var nowWeather = data.body.weather.now;
     var forecastWeather = data.body.weather.forecast;
@@ -126,7 +131,30 @@ function display(data){
         })
     }
 
-    //
+    //초단기예보
+    const ultraSrtFcstBox = document.getElementById('ultraSrtFcstBox');
+    const ultraSrtFcstData = data.body.weather.forecast;
+    console.log(ultraSrtFcstData)
+    document.getElementById('ultraSrtFcstBasetime').textContent = baseTime(ultraSrtFcstData.baseTime).slice(10,)
+    ultraSrtFcstBox.replaceChildren();
+
+    ultraSrtFcstData.items.forEach(element => {
+        console.log(element)
+        var box = document.createElement('div');
+        box.className = 'ultraSrtFcstContent'
+
+        var time = document.createElement('p');
+        time.textContent = baseTime(element.forecastTime).slice(14, 16) + '시';
+        time.className = 'ultraSrtFcstTime';
+        box.appendChild(time);
+        
+        var temp = document.createElement('p');
+        temp.textContent = element.data.temp + '°C'
+        temp.className = 'ultraSrtFcstTemp';
+        box.appendChild(temp)
+
+        ultraSrtFcstBox.appendChild(box)
+    });
 }
 
 function getWeather(lat, lon) {
@@ -159,121 +187,121 @@ function getWeatherSigungu(add){
             finLoad();
         });
 }
-getWeather(37.49, 126.91)
+// getWeather(37.49, 126.91)
 var test = {
     "success": true,
     "timezone": "KST",
-    "responseTime": "2025-12-30T15:25:30.481+09:00",
+    "responseTime": "2026-01-19T13:08:34.861+09:00",
     "body": {
         "location": {
             "grid": [
-                67,
-                140
+                59,
+                125
             ],
             "coord": [
-                38.1646509515925,
-                127.415710898265
+                37.49,
+                126.91
             ],
-            "text": "강원특별자치도 철원군 서면 자등리"
+            "text": "서울특별시 동작구 신대방동"
         },
         "weather": {
             "now": {
-                "basetime": "202512301500",
+                "basetime": "202601191200",
                 "data": {
                     "wind": {
-                        "dir": "225",
-                        "speed": "2.6"
+                        "dir": "291",
+                        "speed": "2.5"
                     },
                     "rainType": "없음",
-                    "humid": "29",
+                    "humid": "47",
                     "rain": "0",
-                    "temp": "0.2"
+                    "temp": "-4.1"
                 }
             },
             "forecast": {
-                "baseTime": "202512301430",
+                "baseTime": "202601191230",
                 "items": [
                     {
-                        "forecastTime": "202512301500",
+                        "forecastTime": "202601191300",
                         "data": {
                             "temp": "-3",
                             "rain": "강수없음",
                             "rainType": "없음",
-                            "sky": "맑음",
+                            "sky": "구름 많음",
                             "humid": "40",
                             "wind": {
-                                "dir": "317",
-                                "speed": "4"
+                                "dir": "8",
+                                "speed": "2"
                             }
                         }
                     },
                     {
-                        "forecastTime": "202512301600",
+                        "forecastTime": "202601191400",
                         "data": {
                             "temp": "-3",
                             "rain": "강수없음",
                             "rainType": "없음",
                             "sky": "맑음",
-                            "humid": "40",
+                            "humid": "35",
                             "wind": {
-                                "dir": "316",
-                                "speed": "4"
+                                "dir": "10",
+                                "speed": "2"
                             }
                         }
                     },
                     {
-                        "forecastTime": "202512301700",
+                        "forecastTime": "202601191500",
                         "data": {
                             "temp": "-3",
                             "rain": "강수없음",
                             "rainType": "없음",
-                            "sky": "맑음",
-                            "humid": "50",
+                            "sky": "구름 많음",
+                            "humid": "35",
                             "wind": {
-                                "dir": "312",
-                                "speed": "4"
-                            }
-                        }
-                    },
-                    {
-                        "forecastTime": "202512301800",
-                        "data": {
-                            "temp": "-5",
-                            "rain": "강수없음",
-                            "rainType": "없음",
-                            "sky": "맑음",
-                            "humid": "60",
-                            "wind": {
-                                "dir": "293",
+                                "dir": "328",
                                 "speed": "3"
                             }
                         }
                     },
                     {
-                        "forecastTime": "202512301900",
+                        "forecastTime": "202601191600",
+                        "data": {
+                            "temp": "-4",
+                            "rain": "강수없음",
+                            "rainType": "없음",
+                            "sky": "구름 많음",
+                            "humid": "30",
+                            "wind": {
+                                "dir": "318",
+                                "speed": "5"
+                            }
+                        }
+                    },
+                    {
+                        "forecastTime": "202601191700",
                         "data": {
                             "temp": "-6",
                             "rain": "강수없음",
                             "rainType": "없음",
-                            "sky": "맑음",
-                            "humid": "65",
+                            "sky": "흐림",
+                            "humid": "35",
                             "wind": {
-                                "dir": "279",
-                                "speed": "3"
+                                "dir": "313",
+                                "speed": "6"
                             }
                         }
                     },
                     {
-                        "forecastTime": "202512302000",
+                        "forecastTime": "202601191800",
                         "data": {
                             "temp": "-7",
                             "rain": "강수없음",
                             "rainType": "없음",
-                            "sky": "구름 많음",
-                            "humid": "75",
+                            "sky": "흐림",
+                            "humid": "35",
                             "wind": {
-                                "dir": "277",
-                                "speed": "3"
+                                "dir": "315",
+                                "speed": "6"
                             }
                         }
                     }
@@ -283,26 +311,19 @@ var test = {
         "warning": {
             "warning": [
                 {
-                    "regId": "L1021300",
+                    "regId": "L1100300",
                     "type": "한파",
                     "level": "주의",
                     "order": "발표",
-                    "issue": "202512302100",
-                    "over": ""
-                },
-                {
-                    "regId": "L1021300",
-                    "type": "건조",
-                    "level": "경보",
-                    "order": "발표",
-                    "issue": "202512302100",
+                    "issue": "202601192100",
                     "over": ""
                 }
             ]
         }
     }
 }
-// display(test)
+console.log(test)
+display(test)
 
 document.getElementById('getLocation').addEventListener("click", function(){
     navigator.geolocation.getCurrentPosition((position) => {
