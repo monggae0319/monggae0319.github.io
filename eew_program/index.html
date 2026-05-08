@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JEM - Japan Earthquake Map</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <link href="./src/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="app">
+        <div id="map-container">
+            <div id="map-tooltip"></div>
+            <canvas id="baseCanvas"></canvas>
+            <canvas id="overlayInfoCanvas"></canvas>
+
+            <div id="controls">
+                <button id="zoomIn">+</button>
+                <button id="zoomOut">−</button>
+            </div>
+
+        </div>
+        <div id="sidebar">
+            <div id="info-box">
+                <div id="earthquake-info">
+                    <div id="earthquake-info-box">
+                        <div class="earthquake-info-title-box">
+                            <div>
+                                <h1 id="earthquake-info-title"></h1>
+                                <p id="earthquake-info-reportTime"></p>
+                            </div>
+                            <div>
+                                <h3 id="earthquake-info-tsunami"></h3>
+                            </div>
+                        </div>
+                        <div id="earthquake-info-intmag-box">
+                            <div class="earthquake-info-int-box">
+                                <p>최대진도</p>
+                                <p id="earthquake-info-int"></p>
+                            </div>
+                            <div class="earthquake-info-mag-box">
+                                <p>규모</p>
+                                <p>
+                                    <span id="earthquake-info-mag-type"></span><span id="earthquake-info-mag"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="earthquake-info-other-box">
+                            <p id="earthquake-info-originTime"></p>
+                            <h2 id="earthquake-info-hypocenter"></h2>
+                            <p id="earthquake-info-depth"></p>
+                        </div>
+                        <p id="earthquake-info-comments"></p>
+                        <div id="earthquake-info-intinfo">
+
+                        </div>
+                    </div>
+                    <div id="earthquake-list-box">
+                    </div>
+                </div>
+                <div id="eew-info">
+                    긴급지진속보
+                </div>
+                <div id="tsunami-info">
+                    해일정보
+                </div>
+                <div id="setting-info">
+                    설정
+                </div>
+            </div>
+            <div id="bottom-buttons">
+                <div id="earthquake-info-btn-box">
+                    <img id="earthquake-info-btn" src="./src/icons/info.svg" alt="지진정보" class="clicked">
+                </div>
+                <div id="eew-info-btn-box">
+                    <img id="eew-info-btn" src="./src/icons/earthquake.svg" alt="긴급지진속보">
+                </div>
+                <div id="tsunami-info-btn-box">
+                    <img id="tsunami-info-btn" src="./src/icons/tsunami.svg" alt="해일정보">
+                </div>
+                <div id="setting-info-btn-box">
+                    <img id="setting-info-btn" src="./src/icons/settings.svg" alt="설정">
+                </div>
+            </div>
+            <div class="clock">
+                <h4 id="nowTime">asdfasdf</h4>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./src/script/map.js" type="module"></script>
+<script src="./src/script/main.js" type="module"></script>
+<script src="./src/script/earthquake.js" type="module"></script>
+
+</html>

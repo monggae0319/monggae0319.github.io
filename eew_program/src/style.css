@@ -1,0 +1,201 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+html, body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+h1,h2,h3,h4,p,a,span{
+    margin:0;
+    padding:0;
+}
+h1{
+    font-size: 1.6rem;
+}
+h2{
+    font-size: 1.4rem;
+}
+h3{
+    font-size: 1.2rem;
+}
+h4{
+    font-size: 1.1rem;
+}
+p{
+    font-size: 0.9rem;
+}
+#baseCanvas,
+#overlayInfoCanvas {
+    width: 100%;
+    height: 100%;
+}
+#controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    z-index: 1000;
+}
+
+#controls button {
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: rgba(30, 41, 59, 0.9);
+    color: white;
+
+    font-size: 28px;
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+#controls button:hover {
+    background: rgba(51, 65, 85, 0.95);
+}
+#app{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+}
+#sidebar{
+    flex: 0 0 400px;
+    height: 100vh;
+    background-color: rgb(11, 11, 11);
+    color:white;
+}
+#bottom-buttons{
+    display: flex;
+    justify-content: space-around;
+}
+#earthquake-info, #eew-info, #tsunami-info, #setting-info{
+    padding: 1rem 1rem;
+}
+#earthquake-info{
+    display: block;
+}
+#eew-info{
+    display: none;
+}
+#tsunami-info{
+    display: none;
+}
+#setting-info{
+    display: none;
+}
+#bottom-buttons > div > img{
+    border-radius: 1rem;
+    cursor: pointer;
+}
+.clicked{
+    background-color: rgba(128, 128, 128, 0.464);;
+}
+#nowTime{
+    text-align: center;
+    padding:0.5rem 0;
+}
+.earthquake-info-title-box{
+    display: flex;
+    align-items: center;
+}
+.earthquake-info-title-box > div{
+    width: 50%;
+}
+#earthquake-info-tsunami{
+    text-align: center;
+    padding:0.3rem 0;
+    border-radius: 0.5rem;
+}
+.earthquake-info-title-box{
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #cccccc;
+}
+#earthquake-info-intmag-box{
+    display: flex;
+    justify-content: space-evenly;
+    padding:1.3rem 1rem;
+    border-radius: 1rem;
+}
+#earthquake-info-intmag-box > div{
+    width:38%;
+}
+#earthquake-info-intmag-box > div > *:nth-child(2){
+    text-align: center;
+}
+#earthquake-info-int, #earthquake-info-mag{
+    margin-top:0.3rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+#earthquake-info-mag{
+    margin-left: 0.3rem;
+}
+.earthquake-info-other-box{
+    margin-top: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #cccccc;
+}
+#earthquake-info-hypocenter{
+    padding:0.2rem 0;
+}
+#earthquake-info-comments{
+    white-space: pre-wrap;
+    padding: 0.5rem 0;
+}
+#map-tooltip {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+
+    padding: 10px 12px;
+    border-radius: 10px;
+
+    background: rgba(15, 23, 42, 0.92);
+    color: white;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    z-index: 9999;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+#map-container {
+    position: relative;
+    flex: 1;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#baseCanvas,
+#overlayInfoCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#baseCanvas {
+    z-index: 1;
+    pointer-events: none;
+}
+
+#overlayInfoCanvas {
+    z-index: 2;
+    pointer-events: none;
+}
+
+#map-tooltip {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+}
