@@ -1,0 +1,50 @@
+{
+    "_originalId": "671124c1242efd754045abd7f56a35f15385a21613bea3c34ed594283db61611e1a48102e1fdb55acdcf0e367bc5b0fa",
+    "_schema": {
+        "type": "earthquake-information",
+        "version": "1.1.0"
+    },
+    "type": "震度速報",
+    "title": "震度速報",
+    "status": "通常",
+    "infoType": "発表",
+    "editorialOffice": "大阪管区気象台",
+    "publishingOffice": [
+        "気象庁"
+    ],
+    "pressDateTime": "2026-05-08T03:37:54Z",
+    "reportDateTime": "2026-05-08T12:37:00+09:00",
+    "targetDateTime": "2026-05-08T12:36:00+09:00",
+    "eventId": "20260508123610",
+    "serialNo": null,
+    "infoKind": "震度速報",
+    "infoKindVersion": "1.0_1",
+    "headline": "　８日１２時３６分ころ、地震による強い揺れを感じました。震度３以上が観測された地域をお知らせします。",
+    "body": {
+        "intensity": {
+            "maxInt": "3",
+            "prefectures": [
+                {
+                    "code": "22",
+                    "name": "静岡県",
+                    "maxInt": "3"
+                }
+            ],
+            "regions": [
+                {
+                    "code": "442",
+                    "name": "静岡県中部",
+                    "maxInt": "3"
+                }
+            ]
+        },
+        "comments": {
+            "forecast": {
+                "text": "今後の情報に注意してください。",
+                "codes": [
+                    "0217"
+                ]
+            }
+        }
+    }
+}

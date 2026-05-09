@@ -3,7 +3,7 @@ const baseCanvas = document.getElementById('baseCanvas');
 const overlayInfoCanvas = document.getElementById('overlayInfoCanvas');
 
 const baseCtx = baseCanvas.getContext('2d');
-const overlayCtx = overlayInfoCanvas.getContext('2d');
+const overlayInfoCtx = overlayInfoCanvas.getContext('2d');
 
 let geojson = null;
 
@@ -123,9 +123,10 @@ function clampScale(value) {
 }
 
 function clampOffset() {
+    const zoom = scale / DEFAULT_SCALE;
 
-    const limitX = width * 1.5;
-    const limitY = height * 1.5;
+    const limitX = width * zoom * 1.5;
+    const limitY = height * zoom * 1.5;
 
     offsetX = Math.max(
         -limitX,
@@ -181,6 +182,85 @@ function zoomAt(
 
     redraw();
 }
+export function moveToLatLon(lat, lon, targetScale) {
+    scale = clampScale(targetScale);
+
+    const proj = d3.geoMercator()
+        .center([137, 38])
+        .scale(scale)
+        .translate([width / 2, height / 2]);
+
+    const [x, y] = proj([lon, lat]);
+
+    offsetX = width / 2 - x;
+    offsetY = height / 2 - y;
+
+    clampOffset();
+    redraw();
+}
+export function fitIntensityRegions(
+    intRegionData = currentIntData,
+    padding = 80
+) {
+    if (!geojson) return;
+    if (!intRegionData || intRegionData.length === 0) return;
+
+    const codes = new Set(
+        intRegionData.map(item => String(item.code))
+    );
+
+    const targetFeatures = geojson.features.filter(feature =>
+        codes.has(String(feature.properties.code))
+    );
+
+    if (targetFeatures.length === 0) return;
+
+    const collection = {
+        type: 'FeatureCollection',
+        features: targetFeatures
+    };
+
+    const fitProjection = d3.geoMercator()
+        .center([137, 38])
+        .fitExtent(
+            [
+                [padding, padding],
+                [width - padding, height - padding]
+            ],
+            collection
+        );
+
+    const fittedScale = fitProjection.scale();
+    const fittedTranslate = fitProjection.translate();
+
+    scale = clampScale(fittedScale);
+
+    // scale이 clamp되지 않은 경우
+    if (scale === fittedScale) {
+        offsetX = fittedTranslate[0] - width / 2;
+        offsetY = fittedTranslate[1] - height / 2;
+    }
+
+    // scale이 min/max에 걸려 clamp된 경우
+    else {
+        const tempProjection = d3.geoMercator()
+            .center([137, 38])
+            .scale(scale)
+            .translate([0, 0]);
+
+        const path = d3.geoPath(tempProjection);
+        const bounds = path.bounds(collection);
+
+        const centerX = (bounds[0][0] + bounds[1][0]) / 2;
+        const centerY = (bounds[0][1] + bounds[1][1]) / 2;
+
+        offsetX = -centerX;
+        offsetY = -centerY;
+    }
+
+    clampOffset();
+    redraw();
+}
 
 // ===== Base =====
 
@@ -198,7 +278,7 @@ function drawBase() {
     // ===== Sea =====
 
     baseCtx.fillStyle =
-        '#313c52';
+        '#3c4250ff';
 
     baseCtx.fillRect(
         0,
@@ -224,7 +304,7 @@ function drawBase() {
         // ===== Land =====
 
         baseCtx.fillStyle =
-            '#273952';
+            '#505b6aff';
 
         baseCtx.fill('evenodd');
 
@@ -233,14 +313,7 @@ function drawBase() {
         baseCtx.strokeStyle =
             '#70849f';
 
-        baseCtx.lineWidth =
-            Math.max(
-                0.4,
-                1 / (
-                    scale /
-                    DEFAULT_SCALE
-                )
-            );
+        baseCtx.lineWidth = 1.5
 
         baseCtx.stroke();
     });
@@ -270,106 +343,77 @@ function getIntensityImageSize() {
 
 // ===== Overlay =====
 
-export function drawOverlay(
+export function drawIntOverlay(
     intRegionData = currentIntData
 ) {
-
     if (!geojson) return;
 
-    currentIntData =
-        intRegionData;
+    currentIntData = intRegionData;
 
-    overlayCtx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
+    overlayInfoCtx.clearRect(0, 0, width, height);
 
     const proj = projection();
 
-    geojson.features.forEach(feature => {
+    const intensityOrder = {
+        "7": 1,
+        "6+": 2,
+        "6-": 3,
+        "5+": 4,
+        "5-": 5,
+        "4": 6,
+        "3": 7,
+        "2": 8,
+        "1": 9
+    };
 
-        const code =
-            feature.properties.code;
+    const drawTargets = geojson.features
+        .map(feature => {
+            const code = feature.properties.code;
 
-        // ===== Region =====
-
-        const region =
-            intRegionData.find(
-                item =>
-                    item.code === code
+            const region = intRegionData.find(
+                item => item.code === code
             );
 
-        if (!region) return;
+            if (!region) return null;
 
-        // ===== Intensity =====
+            return {
+                feature,
+                region,
+                intensity: region.maxInt
+            };
+        })
+        .filter(Boolean)
+        .sort((a, b) => {
+            return intensityOrder[b.intensity] - intensityOrder[a.intensity];
+        });
 
-        const intensity =
-            region.maxInt;
-
-        const fillColor =
-            color.intensity[
-            intensity
-            ];
+    drawTargets.forEach(({ feature, intensity }) => {
+        const fillColor = color.intensity[intensity];
 
         if (!fillColor) return;
 
-        overlayCtx.beginPath();
+        overlayInfoCtx.beginPath();
 
-        const path =
-            d3.geoPath(
-                proj,
-                overlayCtx
-            );
-
+        const path = d3.geoPath(proj, overlayInfoCtx);
         path(feature);
 
-        // ===== Fill =====
+        overlayInfoCtx.fillStyle = fillColor;
+        overlayInfoCtx.globalAlpha = 0.7;
+        overlayInfoCtx.fill('evenodd');
+        overlayInfoCtx.globalAlpha = 1;
 
-        overlayCtx.fillStyle =
-            fillColor;
-
-        overlayCtx.globalAlpha =
-            0.7;
-
-        overlayCtx.fill(
-            'evenodd'
-        );
-
-        overlayCtx.globalAlpha =
-            1;
-
-        // ===== Center =====
-
-        const centroid =
-            d3.geoCentroid(
-                feature
-            );
-
-        const point =
-            proj(centroid);
+        const centroid = d3.geoCentroid(feature);
+        const point = proj(centroid);
 
         if (!point) return;
 
         const [cx, cy] = point;
+        const img = intensityImages[intensity];
 
-        // ===== Image =====
+        if (img && img.complete) {
+            const size = getIntensityImageSize();
 
-        const img =
-            intensityImages[
-            intensity
-            ];
-
-        if (
-            img &&
-            img.complete
-        ) {
-
-            const size =
-                getIntensityImageSize();
-
-            overlayCtx.drawImage(
+            overlayInfoCtx.drawImage(
                 img,
                 cx - size / 2,
                 cy - size / 2,
@@ -379,10 +423,72 @@ export function drawOverlay(
         }
     });
 }
+var mapImages = [];
 
+export function addImageAtLatLon(
+    img,
+    lat,
+    lon,
+    baseSize = 32
+) {
+
+    mapImages.push({
+        img,
+        lat,
+        lon,
+        baseSize
+    });
+
+    redraw();
+}
+function drawMapImages() {
+
+    const proj = projection();
+
+    mapImages.forEach(item => {
+
+        const point =
+            proj([
+                item.lon,
+                item.lat
+            ]);
+
+        if (!point) return;
+
+        const [x, y] = point;
+
+        const zoom =
+            scale / DEFAULT_SCALE;
+
+        const size =
+            Math.max(
+                24,
+                Math.min(
+                    30,
+                    item.baseSize /
+                    Math.sqrt(zoom)
+                )
+            );
+
+        overlayInfoCtx.drawImage(
+            item.img,
+            x - size / 2,
+            y - size / 2,
+            size,
+            size
+        );
+    });
+}
+export function clearMapImages() {
+
+    mapImages = [];
+
+    redraw();
+}
 // ===== Show / Hide =====
 export function showInfoOverlay() {
     overlayInfoCanvas.style.opacity = '1';
+    fitIntensityRegions(currentIntData);
 }
 
 export function hideInfoOverlay() {
@@ -397,9 +503,10 @@ export function redraw() {
 
     drawBase();
 
-    drawOverlay(
+    drawIntOverlay(
         currentIntData
     );
+    drawMapImages();
 }
 
 // ===== Drag =====

@@ -72,11 +72,14 @@ p{
     background-color: rgb(11, 11, 11);
     color:white;
 }
+#info-box{
+    overflow-y: auto;
+}
 #bottom-buttons{
     display: flex;
     justify-content: space-around;
 }
-#earthquake-info, #eew-info, #tsunami-info, #setting-info{
+#earthquake-info, #list-info, #eew-info, #tsunami-info, #setting-info{
     padding: 1rem 1rem;
 }
 #earthquake-info{
@@ -198,4 +201,49 @@ p{
     position: absolute;
     z-index: 20;
     pointer-events: none;
+}
+#earthquake-info-intinfo{
+    margin-top: 1rem;
+}
+.earthquake-info-intinfo-typebox{
+    display: flex;
+    border: 1px solid white;
+}
+.earthquake-info-intinfo-typebox > p{
+    width: 50%;
+    text-align: center;
+    padding:0.5rem 0;
+    cursor: pointer;
+    background-color: rgb(11, 11, 11);
+    color: white;
+}
+.earthquake-info-intinfo-checked{
+    background-color: aquamarine !important;
+    color:black !important;
+}
+.earthquake-info-intinfo-area, .earthquake-info-intinfo-city{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    align-items: center;
+}
+.earthquake-info-intinfo-class{
+    width:15%;
+}
+.earthquake-info-intinfo-class > h4{
+    text-align: center;
+    padding:0.3rem 0;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+.earthquake-info-intinfo-area-text, .earthquake-info-intinfo-city-text{
+    width:80%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.earthquake-info-intinfo-area-text > p, .earthquake-info-intinfo-city-text > p {
+    margin-right: 1rem;
+}
+#earthquake-info-intinfo-citybox{
+    display: none;
 }

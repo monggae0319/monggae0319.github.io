@@ -1,0 +1,66 @@
+{
+    "_originalId": "92f17a5ea0f82aa794f17e4e58e0afab563a2cf8fff35ce3a5504c28978f25217e9ab8e8af7cc79bc032b35d63c7b1a5",
+    "_schema": {
+        "type": "earthquake-information",
+        "version": "1.1.0"
+    },
+    "type": "震源に関する情報",
+    "title": "震源に関する情報",
+    "status": "通常",
+    "infoType": "発表",
+    "editorialOffice": "大阪管区気象台",
+    "publishingOffice": [
+        "気象庁"
+    ],
+    "pressDateTime": "2026-05-08T03:39:14Z",
+    "reportDateTime": "2026-05-08T12:39:00+09:00",
+    "targetDateTime": "2026-05-08T12:39:00+09:00",
+    "eventId": "20260508123610",
+    "serialNo": null,
+    "infoKind": "震源速報",
+    "infoKindVersion": "1.0_1",
+    "headline": "きょう　８日１２時３６分ころ、地震がありました。",
+    "body": {
+        "earthquake": {
+            "originTime": "2026-05-08T12:36:00+09:00",
+            "arrivalTime": "2026-05-08T12:36:00+09:00",
+            "hypocenter": {
+                "code": "442",
+                "name": "静岡県中部",
+                "coordinate": {
+                    "latitude": {
+                        "text": "35.1˚N",
+                        "value": "35.1000"
+                    },
+                    "longitude": {
+                        "text": "138.3˚E",
+                        "value": "138.3000"
+                    },
+                    "height": {
+                        "type": "高さ",
+                        "unit": "m",
+                        "value": "-10000"
+                    }
+                },
+                "depth": {
+                    "type": "深さ",
+                    "unit": "km",
+                    "value": "10"
+                }
+            },
+            "magnitude": {
+                "type": "マグニチュード",
+                "value": "4.2",
+                "unit": "Mj"
+            }
+        },
+        "comments": {
+            "forecast": {
+                "text": "この地震による津波の心配はありません。",
+                "codes": [
+                    "0215"
+                ]
+            }
+        }
+    }
+}
